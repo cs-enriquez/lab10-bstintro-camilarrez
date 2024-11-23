@@ -16,7 +16,7 @@ class Node {
 		// input: only an integer value for "key", no pointer arguments
 		// 		right and left pointers should be null
 	Node(int value = 0){
-		kay = value;
+		key = value;
 		right = nullptr;
 		left = nullptr;
 	}
@@ -28,11 +28,11 @@ class Node {
 // {13, 0, 7, 6, 21, 15, -2, 12, 99, 18, 19, -1}
 Node* createTree() {
 	// root
-	Node *root = nullptr;
+	Node *root = new Node(13);
 
 	// level 1 (children of root)
 root->left = new Node(0);
-root->right = new Node(21)
+root->right = new Node(21);
 	// level 2 (children of 0)
 root->left->left = new Node(-2);
 root->left->right = new Node(7);
@@ -62,18 +62,28 @@ root->right->left->right = new Node(18);
 // You should write this function recursively! What is the base case? What is the general case?
 bool searchTree(int target, Node* root) {
 	// Base casee
+	//tree is empty
 	if(root == nullptr){
 		return false;
 	}
 
-	// General case
-	if(root->data = target){
+	//check if current node key is target
+	if(root->key == target){
 		return true;
-	}else(){
-		
+	}
+
+	// General case
+
+	//search left
+	if(root->key > target){
+		return searchTree(target, root->left); //Search left side
+	}
+
+	//search right
+	if(root->key < target){
+		return searchTree(target, root->right); //Search right side
 	}
 	return false;
-	
 }
 
 // Write a function that will return the total number of Nodes in the tree
@@ -82,18 +92,42 @@ bool searchTree(int target, Node* root) {
 // You should write this function recursively!
 int treeSize(Node* root) {
 	// base case
-	return -1;
+
+	if(root == nullptr){
+		return 0;
+	}
 
 	// General case
-	return -1;
+	//adds current node, left nodes and right nodes
+	return 1+ treeSize(root->left) + treeSize(root->right);
 
 }
 
 // BONUS! Write a function that will determine the height of the tree
 int treeHeight(Node* root) {
 	// base case
-	return -1;
+	//tree is empty. It has less than zero levels (-1 levels)
+	if(root == nullptr){
+		return -1;
+	}
 
-	// General case
-	return -1;
+
+	
+	// General case 
+	//check the height of left and right nodes
+	int left = treeHeight(root->left);
+	int right = treeHeight(root->right);
+	
+	//assign max with the side that is the highest 
+	int max;
+	if(left>right){
+		max = left;
+	}else{
+		max = right;
+	}
+
+	//add current node + max height
+	return 1+ max;
+
+	
 }
